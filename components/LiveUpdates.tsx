@@ -34,8 +34,8 @@ export default function LiveUpdates() {
           </Link>
         </div>
       ) : (
-        <div className="flex">
-          <div className="pt-4 pr-8 text-[12px] text-neutral-500 w-28 shrink-0 font-mono">
+        <div className="flex flex-col gap-3 md:flex-row">
+          <div className="pt-1 md:pt-4 md:pr-8 text-[11px] md:text-[12px] text-neutral-500 w-full md:w-28 md:shrink-0 font-mono flex items-center md:block">
             {monthLabel}
           </div>
           <div className="flex-1">
