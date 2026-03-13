@@ -7,7 +7,7 @@ export default function MapPage() {
   return (
     <div className="min-h-screen bg-[#fafaf8] text-[#111] flex flex-col">
       {/* Header row */}
-      <div className="flex justify-between px-8 md:px-12 pt-10 pb-6 max-w-6xl w-full mx-auto gap-12">
+      <div className="flex justify-between px-8 md:px-12 pt-8 pb-4 md:pt-10 md:pb-5 max-w-6xl w-full mx-auto gap-12">
         <div className="min-w-0">
           <Logo />
           <h1 className="text-[15px] font-medium mb-1">Area map</h1>
@@ -19,8 +19,8 @@ export default function MapPage() {
       </div>
 
       {/* Coming soon content */}
-      <div className="px-8 md:px-12 pb-24 md:pb-10 max-w-6xl w-full mx-auto flex-1 flex items-center">
-        <div className="w-full border border-dashed border-neutral-300 bg-white/60 px-6 py-8 md:px-10 md:py-12 flex flex-col md:flex-row md:items-center gap-6">
+      <div className="px-8 md:px-12 pb-12 md:pb-8 max-w-6xl w-full mx-auto flex-1 flex items-start md:items-center">
+        <div className="w-full border border-dashed border-neutral-300 bg-white/60 px-6 py-6 md:px-10 md:py-10 flex flex-col md:flex-row md:items-center gap-6">
           <div className="flex-1">
             <p className="text-[11px] uppercase tracking-[0.16em] text-neutral-500 mb-2">
               Area map

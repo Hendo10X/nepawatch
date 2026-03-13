@@ -96,6 +96,12 @@ export default function DashboardClient() {
               />
             )}
           </div>
+          <p className="mt-3 text-[11px] text-neutral-500 max-w-md">
+            This line counts how many reports have been submitted over time. A
+            rising line means people are actively reporting outages or
+            restorations; a flat line means there is no new activity during
+            that period.
+          </p>
         </div>
       </div>
 
