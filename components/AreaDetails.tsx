@@ -41,7 +41,7 @@ export default function AreaDetail({ slug }: { slug: string }) {
     return (
       <PageShell>
         <Logo />
-        <p className="text-[13px] text-neutral-400">Loading...</p>
+        <p className="text-[13px] text-neutral-500">Loading...</p>
       </PageShell>
     );
 
@@ -49,10 +49,10 @@ export default function AreaDetail({ slug }: { slug: string }) {
     return (
       <PageShell>
         <Logo />
-        <p className="text-[13px] text-neutral-400 mb-3">Area not found.</p>
+        <p className="text-[13px] text-neutral-500 mb-3">Area not found.</p>
         <Link
           href="/"
-          className="text-[12px] text-neutral-400 hover:text-[#111] transition-colors">
+          className="text-[12px] text-neutral-500 hover:text-[#111] transition-colors">
           ← Back
         </Link>
       </PageShell>
@@ -98,7 +98,7 @@ export default function AreaDetail({ slug }: { slug: string }) {
 
       {/* Area title */}
       <h1 className="text-[15px] font-medium text-[#111] mb-1">{area.name}</h1>
-      <p className="text-[13px] text-neutral-400 mb-10">
+      <p className="text-[13px] text-neutral-500 mb-10">
         {area.lga} · {area.state}
       </p>
 
@@ -108,7 +108,7 @@ export default function AreaDetail({ slug }: { slug: string }) {
         <div className="flex items-center justify-between py-4 border-b border-neutral-100">
           <div className="flex items-center gap-2.5">
             {status === undefined || status === null ? (
-              <span className="text-[13px] text-neutral-400">
+              <span className="text-[13px] text-neutral-500">
                 No reports yet
               </span>
             ) : (
@@ -122,7 +122,7 @@ export default function AreaDetail({ slug }: { slug: string }) {
                   {hasLight ? "Light available" : "No light"}
                 </span>
                 {!hasLight && duration && (
-                  <span className="text-[13px] text-neutral-400">
+                  <span className="text-[13px] text-neutral-500">
                     — out for {duration}
                   </span>
                 )}
@@ -130,7 +130,7 @@ export default function AreaDetail({ slug }: { slug: string }) {
             )}
           </div>
           {status?.avgOutageMins ? (
-            <span className="text-[12px] text-neutral-400 font-mono">
+            <span className="text-[12px] text-neutral-500 font-mono">
               avg {Math.round(status.avgOutageMins)}m
             </span>
           ) : null}
@@ -157,7 +157,7 @@ export default function AreaDetail({ slug }: { slug: string }) {
         {feedback && (
           <p className="mt-3 text-[12px] text-neutral-500">{feedback}</p>
         )}
-        <p className="mt-2 text-[11px] text-neutral-300">
+        <p className="mt-2 text-[11px] text-neutral-400">
           Needs 2 confirmations to update · 1 report per 30 mins
         </p>
       </div>
@@ -167,7 +167,7 @@ export default function AreaDetail({ slug }: { slug: string }) {
         <div>
           <SectionLabel label="Recent reports" />
           <div className="flex">
-            <div className="pt-4 pr-8 text-[12px] text-neutral-400 w-28 shrink-0 font-mono">
+            <div className="pt-4 pr-8 text-[12px] text-neutral-500 w-28 shrink-0 font-mono">
               {monthLabel}
             </div>
             <div className="flex-1">
@@ -186,16 +186,16 @@ export default function AreaDetail({ slug }: { slug: string }) {
                             : "bg-green-400"
                         }`}
                       />
-                      <span className="text-[13px] text-neutral-500">
+                      <span className="text-[13px] text-neutral-600">
                         {report.type === "outage" ? "No light" : "Restored"}
                       </span>
                     </div>
                     <div className="flex items-center gap-4">
-                      <span className="text-[12px] text-neutral-400 font-mono">
+                      <span className="text-[12px] text-neutral-500 font-mono">
                         {report.confirmedCount} confirm
                         {report.confirmedCount !== 1 ? "s" : ""}
                       </span>
-                      <span className="text-[12px] text-neutral-400 font-mono">
+                      <span className="text-[12px] text-neutral-500 font-mono">
                         {dateStr}
                       </span>
                     </div>

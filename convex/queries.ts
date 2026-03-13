@@ -1,7 +1,6 @@
 import { query } from "./_generated/server";
 import { v } from "convex/values";
 
-
 export const getLiveMap = query({
   args: {},
   handler: async (ctx) => {
@@ -71,5 +70,27 @@ export const getDashboardStats = query({
     );
 
     return { darkCount, lightCount, worstAreas: withAreas };
+  },
+});
+
+// Latest reports across regions for homepage live feed
+export const getRecentReports = query({
+  args: {},
+  handler: async (ctx) => {
+    const reports = await ctx.db.query("reports").collect();
+
+    const sorted = reports
+      .slice()
+      .sort((a, b) => b._creationTime - a._creationTime)
+      .slice(0, 12);
+
+    const withAreas = await Promise.all(
+      sorted.map(async (report) => {
+        const area = await ctx.db.get(report.areaId);
+        return { ...report, area };
+      }),
+    );
+
+    return withAreas;
   },
 });

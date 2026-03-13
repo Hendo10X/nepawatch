@@ -13,6 +13,8 @@
     "@types/leaflet": "^1.9.21",
     "convex": "^1.33.0",
     "leaflet": "^1.9.4",
+    "liveline": "^0.0.7",
+    "motion": "^12.36.0",
     "next": "16.1.6",
     "react": "19.2.3",
     "react-dom": "19.2.3"

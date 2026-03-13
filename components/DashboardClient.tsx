@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery } from "convex/react";
+import { Liveline } from "liveline";
 import { api } from "@/convex/_generated/api";
 import PageShell, { Logo, SectionLabel } from "@/components/PageShell";
 import Link from "next/link";
@@ -8,10 +9,25 @@ import Link from "next/link";
 export default function DashboardClient() {
   const stats = useQuery(api.queries.getDashboardStats);
   const areas = useQuery(api.queries.getLiveMap);
+   const recentReports = useQuery(api.queries.getRecentReports);
 
   const dark = areas?.filter((a) => a.status && !a.status.hasLight) ?? [];
   const light = areas?.filter((a) => a.status?.hasLight) ?? [];
   const unreported = areas?.filter((a) => !a.status) ?? [];
+
+  const chartPoints =
+    recentReports?.length
+      ? [...recentReports]
+          .sort((a, b) => a._creationTime - b._creationTime)
+          .map((report, index) => ({
+            time: report._creationTime,
+            value: index + 1,
+          }))
+      : [];
+
+  const latestValue = chartPoints.length
+    ? chartPoints[chartPoints.length - 1]?.value ?? 0
+    : 0;
 
   const monthLabel = new Date().toLocaleString("en-US", {
     month: "long",
@@ -23,7 +39,7 @@ export default function DashboardClient() {
       <Logo />
 
       <h1 className="text-[15px] font-medium text-[#111] mb-1">Dashboard</h1>
-      <p className="text-[13px] text-neutral-400 mb-10">
+      <p className="text-[13px] text-neutral-500 mb-10">
         Live overview of power availability across Lagos.
       </p>
 
@@ -31,7 +47,7 @@ export default function DashboardClient() {
       <div className="mb-10">
         <SectionLabel label="Summary" />
         <div className="flex">
-          <div className="w-28 shrink-0 pt-4 text-[12px] text-neutral-400 pr-8 font-mono">
+          <div className="w-28 shrink-0 pt-4 text-[12px] text-neutral-500 pr-8 font-mono">
             {monthLabel}
           </div>
           <div className="flex-1">
@@ -54,12 +70,33 @@ export default function DashboardClient() {
         </div>
       </div>
 
+      {/* Live reports chart */}
+      <div className="mb-10">
+        <SectionLabel label="Live reports activity" />
+        <div className="pt-4">
+          <div className="h-40 md:h-48 border border-neutral-200 bg-white/60">
+            <Liveline
+              data={chartPoints}
+              value={latestValue}
+              loading={recentReports === undefined}
+              emptyText="No live reports yet"
+              color="#16a34a"
+              theme="light"
+              grid
+              badge={false}
+              exaggerate
+              window={30 * 60}
+            />
+          </div>
+        </div>
+      </div>
+
       {/* Worst areas */}
       {stats?.worstAreas && stats.worstAreas.length > 0 && (
         <div className="mb-10">
           <SectionLabel label="Worst areas by avg outage" />
           <div className="flex">
-            <div className="w-28 shrink-0 pt-4 text-[12px] text-neutral-400 pr-8">
+            <div className="w-28 shrink-0 pt-4 text-[12px] text-neutral-500 pr-8">
               Ranked
             </div>
             <div className="flex-1">
@@ -69,14 +106,14 @@ export default function DashboardClient() {
                   href={`/area/${s.area?.slug}`}
                   className="flex items-center justify-between py-3 border-b border-neutral-100 group hover:bg-black/2 -mx-2 px-2 transition-colors duration-100">
                   <div className="flex items-center gap-2.5">
-                    <span className="text-[12px] text-neutral-300 w-4 font-mono shrink-0">
+                    <span className="text-[12px] text-neutral-400 w-4 font-mono shrink-0">
                       {i + 1}
                     </span>
                     <span className="text-[13px] text-neutral-500 group-hover:text-[#111] transition-colors duration-100">
                       {s.area?.name ?? "—"}
                     </span>
                   </div>
-                  <span className="text-[12px] text-neutral-400 font-mono">
+                  <span className="text-[12px] text-neutral-500 font-mono">
                     {Math.round(s.avgOutageMins)}m avg
                   </span>
                 </Link>
@@ -91,7 +128,7 @@ export default function DashboardClient() {
         <div className="mb-10">
           <SectionLabel label="Currently dark" />
           <div className="flex">
-            <div className="w-28 shrink-0 pt-4 text-[12px] text-neutral-400 pr-8">
+            <div className="w-28 shrink-0 pt-4 text-[12px] text-neutral-500 pr-8">
               Now
             </div>
             <div className="flex-1">
@@ -107,11 +144,11 @@ export default function DashboardClient() {
                     className="flex items-center justify-between py-3 border-b border-neutral-100 group hover:bg-black/2 -mx-2 px-2 transition-colors duration-100">
                     <div className="flex items-center gap-2.5">
                       <span className="inline-block w-1.5 h-1.5 rounded-full bg-red-400 shrink-0" />
-                      <span className="text-[13px] text-neutral-500 group-hover:text-[#111] transition-colors duration-100">
+                      <span className="text-[13px] text-neutral-600 group-hover:text-[#111] transition-colors duration-100">
                         {area.name}
                       </span>
                     </div>
-                    <span className="text-[12px] text-neutral-400 font-mono">
+                    <span className="text-[12px] text-neutral-500 font-mono">
                       {duration ?? "—"}
                     </span>
                   </Link>
@@ -124,10 +161,10 @@ export default function DashboardClient() {
 
       {/* Currently lit */}
       {light.length > 0 && (
-        <div>
+        <div className="mb-10">
           <SectionLabel label="Currently lit" />
           <div className="flex">
-            <div className="w-28 shrink-0 pt-4 text-[12px] text-neutral-400 pr-8">
+            <div className="w-28 shrink-0 pt-4 text-[12px] text-neutral-500 pr-8">
               Now
             </div>
             <div className="flex-1">
@@ -138,11 +175,41 @@ export default function DashboardClient() {
                   className="flex items-center justify-between py-3 border-b border-neutral-100 group hover:bg-black/2 -mx-2 px-2 transition-colors duration-100">
                   <div className="flex items-center gap-2.5">
                     <span className="inline-block w-1.5 h-1.5 rounded-full bg-green-400 shrink-0" />
-                    <span className="text-[13px] text-neutral-500 group-hover:text-[#111] transition-colors duration-100">
+                    <span className="text-[13px] text-neutral-600 group-hover:text-[#111] transition-colors duration-100">
                       {area.name}
                     </span>
                   </div>
-                  <span className="text-[12px] text-neutral-400 font-mono">
+                  <span className="text-[12px] text-neutral-500 font-mono">
+                    {area.lga}
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* No reports yet (areas with zero user reports) */}
+      {unreported.length > 0 && (
+        <div>
+          <SectionLabel label="No reports yet (no user data)" />
+          <div className="flex">
+            <div className="w-28 shrink-0 pt-4 text-[12px] text-neutral-500 pr-8">
+              Waiting
+            </div>
+            <div className="flex-1">
+              {unreported.map((area) => (
+                <Link
+                  key={area._id}
+                  href={`/area/${area.slug}`}
+                  className="flex items-center justify-between py-3 border-b border-neutral-100 group hover:bg-black/2 -mx-2 px-2 transition-colors duration-100">
+                  <div className="flex items-center gap-2.5">
+                    <span className="inline-block w-1.5 h-1.5 rounded-full bg-neutral-300 shrink-0" />
+                    <span className="text-[13px] text-neutral-600 group-hover:text-[#111] transition-colors duration-100">
+                      {area.name}
+                    </span>
+                  </div>
+                  <span className="text-[12px] text-neutral-500 font-mono">
                     {area.lga}
                   </span>
                 </Link>

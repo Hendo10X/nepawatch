@@ -49,7 +49,7 @@ export default function FindClient() {
       <h1 className="text-[15px] font-medium text-[#111] mb-1">
         Find your local
       </h1>
-      <p className="text-[13px] text-neutral-400 mb-10">
+      <p className="text-[13px] text-neutral-500 mb-10">
         Select an area to see its current power status and submit a report.
       </p>
 
@@ -69,17 +69,17 @@ export default function FindClient() {
         <SectionLabel label={query ? `Results for "${query}"` : "Lagos"} />
 
         {filtered === null ? (
-          <div className="py-5 text-[12px] text-neutral-300 tracking-wide">
+          <div className="py-5 text-[12px] text-neutral-400 tracking-wide">
             Loading...
           </div>
         ) : filtered.length === 0 && query ? null : filtered !== null &&
           filtered.length === 0 ? (
-          <div className="py-5 text-[13px] text-neutral-400">
+          <div className="py-5 text-[13px] text-neutral-500">
             No areas found.
           </div>
         ) : (
           <div className="flex">
-            <div className="w-28 shrink-0 pt-4 text-[12px] text-neutral-400 pr-8 font-mono">
+            <div className="w-28 shrink-0 pt-4 text-[12px] text-neutral-500 pr-8 font-mono">
               {monthLabel}
             </div>
             <div className="flex-1">
@@ -108,11 +108,11 @@ export default function FindClient() {
                               : "bg-red-400"
                         }`}
                       />
-                      <span className="text-[13px] text-neutral-500 group-hover:text-[#111] transition-colors duration-100">
+                      <span className="text-[13px] text-neutral-600 group-hover:text-[#111] transition-colors duration-100">
                         {area.name}
                       </span>
                     </div>
-                    <span className="text-[12px] text-neutral-400 font-mono">
+                    <span className="text-[12px] text-neutral-500 font-mono">
                       {dateStr}
                     </span>
                   </Link>
@@ -128,7 +128,7 @@ export default function FindClient() {
         <div>
           <SectionLabel label="Coming to Nigeria" />
           <div className="flex">
-            <div className="w-28 shrink-0 pt-4 text-[12px] text-neutral-400 pr-8">
+            <div className="w-28 shrink-0 pt-4 text-[12px] text-neutral-500 pr-8">
               Soon
             </div>
             <div className="flex-1">
@@ -138,14 +138,14 @@ export default function FindClient() {
                   className="flex items-center justify-between py-3 border-b border-neutral-100">
                   <div className="flex items-center gap-2.5">
                     <span className="inline-block w-1.5 h-1.5 rounded-full shrink-0 bg-neutral-200" />
-                    <span className="text-[13px] text-neutral-400">
+                    <span className="text-[13px] text-neutral-500">
                       {city.name}
                     </span>
-                    <span className="text-[11px] text-neutral-300">
+                    <span className="text-[11px] text-neutral-400">
                       · {city.region}
                     </span>
                   </div>
-                  <span className="text-[10px] uppercase tracking-widest text-neutral-300 font-medium">
+                  <span className="text-[10px] uppercase tracking-widest text-neutral-400 font-medium">
                     Soon
                   </span>
                 </div>
