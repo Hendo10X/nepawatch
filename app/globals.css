@@ -1,26 +1,75 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fafaf8;
+  --foreground: #111111;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-inter-tight);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter-tight), system-ui, sans-serif;
+}
+
+/* Live pulse for status indicators */
+@keyframes live-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.85); }
+}
+
+.dot-live {
+  animation: live-pulse 2.4s ease-in-out infinite;
+}
+
+/* Leaflet — can't be done with Tailwind */
+.leaflet-container {
+  background: #0d1117 !important;
+  font-family: var(--font-geist-mono), monospace;
+}
+.leaflet-tile {
+  filter: brightness(0.6) saturate(0.4) hue-rotate(180deg) invert(1);
+}
+.leaflet-control-attribution {
+  background: rgba(8, 8, 8, 0.8) !important;
+  color: #444 !important;
+}
+.leaflet-control-attribution a {
+  color: #555 !important;
+}
+.leaflet-control-zoom a {
+  background: #111 !important;
+  color: #e8e8e8 !important;
+  border-color: #252525 !important;
+}
+.nepa-popup .leaflet-popup-content-wrapper {
+  background: #111111;
+  border: 1px solid #333;
+  border-radius: 4px;
+  color: #e8e8e8;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+}
+.nepa-popup .leaflet-popup-tip {
+  background: #111111;
+}
+.nepa-popup .leaflet-popup-content {
+  margin: 12px 16px;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: #f5f5f2;
+}
+::-webkit-scrollbar-thumb {
+  background: #d4d4d0;
+  border-radius: 2px;
 }
