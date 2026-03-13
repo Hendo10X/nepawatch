@@ -9,25 +9,23 @@ import Link from "next/link";
 export default function DashboardClient() {
   const stats = useQuery(api.queries.getDashboardStats);
   const areas = useQuery(api.queries.getLiveMap);
-   const recentReports = useQuery(api.queries.getRecentReports);
+  const recentReports = useQuery(api.queries.getRecentReports);
 
   const dark = areas?.filter((a) => a.status && !a.status.hasLight) ?? [];
   const light = areas?.filter((a) => a.status?.hasLight) ?? [];
   const unreported = areas?.filter((a) => !a.status) ?? [];
 
-  const chartPoints =
-    recentReports?.length
-      ? [...recentReports]
-          .sort((a, b) => a._creationTime - b._creationTime)
-          .map((report, index) => ({
-            time: report._creationTime,
-            value: index + 1,
-          }))
-      : [];
+  const sortedReports = recentReports
+    ? [...recentReports].sort((a, b) => a._creationTime - b._creationTime)
+    : [];
 
-  const latestValue = chartPoints.length
-    ? chartPoints[chartPoints.length - 1]?.value ?? 0
-    : 0;
+  const chartPoints = sortedReports.map((report, index) => ({
+    // Use epoch seconds for time; works with Liveline's window handling.
+    time: report._creationTime / 1000,
+    value: index + 1,
+  }));
+
+  const latestValue = sortedReports.length;
 
   const monthLabel = new Date().toLocaleString("en-US", {
     month: "long",
@@ -74,19 +72,29 @@ export default function DashboardClient() {
       <div className="mb-10">
         <SectionLabel label="Live reports activity" />
         <div className="pt-4">
-          <div className="h-40 md:h-48 border border-neutral-200 bg-white/60">
-            <Liveline
-              data={chartPoints}
-              value={latestValue}
-              loading={recentReports === undefined}
-              emptyText="No live reports yet"
-              color="#16a34a"
-              theme="light"
-              grid
-              badge={false}
-              exaggerate
-              window={30 * 60}
-            />
+          <div className="h-40 md:h-48 border border-neutral-200 bg-white/60 flex items-center">
+            {recentReports === undefined ? (
+              <p className="w-full text-center text-[12px] text-neutral-500">
+                Loading live activity…
+              </p>
+            ) : chartPoints.length === 0 ? (
+              <p className="w-full text-center text-[12px] text-neutral-500">
+                No live reports yet. As soon as people start reporting, this
+                chart will move.
+              </p>
+            ) : (
+              <Liveline
+                data={chartPoints}
+                value={latestValue}
+                color="#16a34a"
+                theme="light"
+                grid
+                badge={false}
+                exaggerate
+                // Show roughly last 30 days of activity so older test reports are still visible.
+                window={30 * 24 * 60 * 60}
+              />
+            )}
           </div>
         </div>
       </div>
